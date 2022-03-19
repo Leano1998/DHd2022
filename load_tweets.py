@@ -1,6 +1,7 @@
 import requests
 import datetime
 import pytz
+import pandas as pd
 
 
 def header_authorization(ini_file: str) -> dict:
@@ -88,3 +89,32 @@ def search_tweets(query: str, next_token: str = None, max_results: int = 100):
     """
     url, params = create_url_params(query, max_results=max_results)
     return connect_to_api(url, header_authorization('twitter_api.ini'), params, next_token)
+
+
+def convert_datetime(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    """
+    A function to convert the column of a dataframe containing ISO-Format ("YYYY-MM-DDTHH:MM:SSZ") values for time
+    information into datetime objects.
+
+    :param df: The dataframe.
+    :param column: The column of the given dataframe containing the time information.
+    :return: The dataframe with the new formatted values.
+    """
+    def iso_to_datetime(iso: str) -> datetime.datetime:
+        iso = iso.split('T')
+        date, day_time = iso[0].split('-'), iso[1].strip('Z').split(':')
+        try:
+            return datetime.datetime(int(date[0]), int(date[1]), int(date[2]), int(day_time[0]), int(day_time[1]),
+                                     int(float(day_time[2])))
+        except ValueError:
+            raise ValueError('The string isn\'t iso-formatted. Expected: YYYY-MM-DDTHH:MM:SSZ, but got: %s' % iso)
+
+    df = pd.DataFrame(df)
+    time_col = []
+    for _, v in df.iterrows():
+        if not pd.isna(v[column]):
+            time_col.append(iso_to_datetime(v[column]))
+        else:
+            time_col.append(None)
+    df[column] = pd.Series(time_col)
+    return df
