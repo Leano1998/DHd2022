@@ -6,5 +6,7 @@ From the 7th to the 11th march the annual DHd conference 2022 took place. Becaus
 conference was held via Zoom. Sitting at home the participants were connected to each other not only via ZOOM or gather-
 town, but also via [Twitter](https://twitter.com/DHd2022).  
 This left us with more than 3500 Tweets from 664 users between the 17th of February and the 18th March 2022. You find an
-analyse and presentation of the tweets in the
+analysis and presentation of the tweets in the
 [Jupyter-Notebook](https://github.com/Leano1998/DHd2022/blob/main/Twitter_DHd2022.ipynb).
+
+You can also find a short presentation of my results in the [DHd-Blog](https://dhd-blog.org/?p=17812).
